@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarRating</title>
+</head>
+
+<body>
+  <div class="star" data-rating="5"></div>
+  <div class="star" data-rating="4"></div>
+  <div class="star" data-rating="3"></div>
+  <div class="star" data-rating="2"></div>
+  <div class="star" data-rating="1"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
+  <script>
+    $.fn.star = function () {
+      let render = function () {
+        let rating = $(this).attr('data-rating')
+
+        for (let i = 1; i <= 5; i++) {
+          if (rating >= i) {
+            $(this).append(`<img data-newRating=${i} class="starImg" src="img/yellow.png " />`)
+          } else {
+            $(this).append(`<img data-newRating=${i} class="starImg" src="img/empty.png " />`);
+          }
+        }
+        $(this).append(`<span> - ${rating}</span>`)
+        $(".starImg").each(changeRating);
+
+      }
+
+      let changeRating = function (index) {
+        $(this).on("click", function (e) {
+          let newRating = $(this).attr('data-newRating');
+
+          $(this).parent().attr('data-rating', newRating);
+          $(this).parent().find( "span" ).replaceWith(`<span> - ${newRating}</span>`)
+          $(this).parent().children().each(function (i, elem) {
+            if (newRating >= i + 1) {
+              $(elem).attr('src',"img/yellow.png")
+            } else {
+              $(elem).attr('src',"img/empty.png")
+            }
+          })
+        });
+      }
+      return $(this).each(render)
+    }
+    $('.star').star();
+  </script>
+</body>
+
+</html>
